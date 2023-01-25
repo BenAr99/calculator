@@ -98,15 +98,3 @@ document.querySelector('.buttons').onclick = (event) => {
     }
 }
 
-function bracket () {
-    if (key === '( )') {
-        a = '(';
-        console.log(a)
-        out.textContent = a
-    }
-    if (key === '( )' || a === '(') {
-        b = ')'
-        console.log(a, b)
-        out.textContent = a+b
-    }
-}
