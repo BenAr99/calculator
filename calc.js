@@ -43,16 +43,33 @@ document.querySelector('.buttons').onclick = (event) => {
     if (digit.includes(key)) {
         digitBuffer += key;
     }
-    if (action.includes(key) || key === '=') {
-        variablesToCalculate.push(digitBuffer);
-        variablesToCalculate.push(action.includes(key));
+    if (action.includes(key)) {
+        variablesToCalculate.push(digitBuffer); // ошибка тут
+        variablesToCalculate.push(key);
         digitBuffer = '';
     }
     if (key === '=') {
-        switch (sign) {
-            case "+":
-                for (i = 0; )
+        variablesToCalculate.push(digitBuffer)
+        digitBuffer = '';
+        let value1 = variablesToCalculate[0];
+        let value2 = variablesToCalculate[2];
+        switch (variablesToCalculate[1]) {
+            case '+':
+                while (Number(variablesToCalculate[0]) && variablesToCalculate[1] === '+') {
+                calculation = Number(value1) + Number(value2);
+                variablesToCalculate.splice(0, 3);
+                variablesToCalculate.unshift(calculation.toString());
+                console.log(calculation)
+            }
+            case '-':
+                while (Number(variablesToCalculate[0]) && variablesToCalculate[1] === '-') { // условие по сути можно убрать, но как остановить цикл, ведь условие то же что и в case
+                    calculation = Number(value1) - Number(value2);
+                    variablesToCalculate.splice(0, 3);
+                    variablesToCalculate.unshift(calculation.toString());
+                    console.log(calculation)
+                }
         }
+        out.textContent = calculation;
     }
     console.log(variablesToCalculate);
 }
