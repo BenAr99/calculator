@@ -6,7 +6,7 @@ let calculation = '';
 
 const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '( )'];
 const action = ['-', '+', 'X', '/', '+/-'];
-const variablesToCalculate = [];
+let variablesToCalculate = [];
 // экран
 
 const out = document.querySelector('.calc-screen span');
@@ -26,27 +26,11 @@ function subtraction (a) {
 }
 
 function clearAll () {
-    a = '';
-    b = '';
-    sign = '';
-    finish = false;
+    variablesToCalculate = [];
     out.textContent = '';
 }
 
-function signChange () {
-    a = -a;
-    if (b !== '') {
-        b = -b;
-        out.textContent = a + sign + b;
-    }
-    console.log(a)
-    out.textContent = a;
-    out.textContent = b;
-}
-
 digitBuffer = '';
-
-document.querySelector('.plus-minus').onclick = signChange;
 
 document.querySelector('.ac').onclick = clearAll;
 
@@ -59,14 +43,16 @@ document.querySelector('.buttons').onclick = (event) => {
     if (digit.includes(key)) {
         digitBuffer += key;
     }
-    if (action.includes(key)) {
+    if (action.includes(key) || key === '=') {
         variablesToCalculate.push(digitBuffer);
-        variablesToCalculate.push(key);
+        variablesToCalculate.push(action.includes(key));
         digitBuffer = '';
     }
-    console.log(variablesToCalculate);
     if (key === '=') {
-        switch (sign)
-            case "":
+        switch (sign) {
+            case "+":
+                for (i = 0; )
+        }
     }
+    console.log(variablesToCalculate);
 }
