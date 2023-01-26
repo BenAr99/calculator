@@ -1,36 +1,17 @@
-let a = "";
-let b = "";
-let sign = "";
-let finish = false;
 let calculation = '';
 
 const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '( )'];
 const action = ['-', '+', 'X', '/', '+/-'];
 let variablesToCalculate = [];
+let digitBuffer = '';
 // экран
 
 const out = document.querySelector('.calc-screen span');
 
-const actionSign = [summation()]
-
-function summation(value1, value2) {
-    calculation = Number(value1) + Number(value2);
-    a = calculation;
-    return calculation;
-}
-
-function subtraction (a) {
-    calculation = value1 - value2;
-    a = calculation;
-    return calculation;
-}
-
-function clearAll () {
+function clearAll() {
     variablesToCalculate = [];
     out.textContent = '';
 }
-
-digitBuffer = '';
 
 document.querySelector('.ac').onclick = clearAll;
 
@@ -40,36 +21,38 @@ document.querySelector('.buttons').onclick = (event) => {
 
     const key = event.target.textContent;
     out.textContent += key;
+
     if (digit.includes(key)) {
         digitBuffer += key;
     }
     if (action.includes(key)) {
-        variablesToCalculate.push(digitBuffer); // ошибка тут
+        variablesToCalculate.push(digitBuffer);
         variablesToCalculate.push(key);
         digitBuffer = '';
     }
     if (key === '=') {
         variablesToCalculate.push(digitBuffer)
         digitBuffer = '';
-        let value1 = variablesToCalculate[0];
-        let value2 = variablesToCalculate[2];
-        switch (variablesToCalculate[1]) {
-            case '+':
-                while (Number(variablesToCalculate[0]) && variablesToCalculate[1] === '+') {
-                calculation = Number(value1) + Number(value2);
-                variablesToCalculate.splice(0, 3);
-                variablesToCalculate.unshift(calculation.toString());
-                console.log(calculation)
+        // ['1', '+', '2', '-', '1']
+        // ['3', '-', '1']
+        // ['2']
+        while (variablesToCalculate.length > 1) {
+            let value1 = Number(variablesToCalculate[0]);
+            let value2 = Number(variablesToCalculate[2]);
+            switch (variablesToCalculate[1]) {
+                case '+':
+                    calculation = value1 + value2;
+                    break
+                case '-':
+                    calculation = value1 - value2;
+                    break
             }
-            case '-':
-                while (Number(variablesToCalculate[0]) && variablesToCalculate[1] === '-') { // условие по сути можно убрать, но как остановить цикл, ведь условие то же что и в case
-                    calculation = Number(value1) - Number(value2);
-                    variablesToCalculate.splice(0, 3);
-                    variablesToCalculate.unshift(calculation.toString());
-                    console.log(calculation)
-                }
+            variablesToCalculate.splice(0, 3);
+            variablesToCalculate.unshift(calculation.toString());
+            console.log('Log after calculate: ', variablesToCalculate)
         }
-        out.textContent = calculation;
+        digitBuffer = calculation;
+        variablesToCalculate = [];
+        out.textContent = digitBuffer;
     }
-    console.log(variablesToCalculate);
 }
