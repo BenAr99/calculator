@@ -8,11 +8,14 @@ let digitBuffer = '';
 
 const out = document.querySelector('.calc-screen span');
 
+function history () {}
+
 function clearAll() {
     variablesToCalculate = [];
     out.textContent = '';
 }
 
+document.querySelector('.calc-history').onclick = history;
 document.querySelector('.ac').onclick = clearAll;
 
 document.querySelector('.buttons').onclick = (event) => {
@@ -45,6 +48,12 @@ document.querySelector('.buttons').onclick = (event) => {
                     break
                 case '-':
                     calculation = value1 - value2;
+                    break
+                case 'X':
+                    calculation = value1 * value2;
+                    break
+                case '/':
+                    calculation = value1 / value2
                     break
             }
             variablesToCalculate.splice(0, 3);
