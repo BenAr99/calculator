@@ -1,3 +1,8 @@
+.history-screen {
+    color: orange;
+
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -17,16 +22,19 @@
 
 .calc-history {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    margin-bottom: 20px;
+}
+
+.btn-history {
+    text-align: center;
     width: 60px;
     height: 30px;
     background: #a6a6a6;
     border-radius: 5px;
-    line-height: 57px;
+    line-height: 30px;
     font-size: 15px;
-    user-select: none;
-    margin-bottom: 20px;
 }
 
 .btn-history:hover {

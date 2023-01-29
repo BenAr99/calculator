@@ -1,16 +1,34 @@
-let calculation = '';
 
 const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '( )'];
 const action = ['-', '+', 'X', '/', '+/-'];
+
+let calculation = '';
 let variablesToCalculate = [];
 let digitBuffer = '';
 // экран
-
+let historytest = '';
+        // sdafasf
 const out = document.querySelector('.calc-screen span');
+screenHistory = document.createElement('div')
 
-function history () {}
+function history () {
+    let test = historytest;
+    let test2 = ''
+    while (test2 === historytest.match(/=/g)  ) {
+
+     }
+
+
+    
+    screenHistory.className = "history-screen";
+    screenHistory.innerHTML = `${i}) <span> ${test} </span>`
+    document.querySelector('.calc-history').append(screenHistory)
+
+
+}
 
 function clearAll() {
+    digitBuffer = '';
     variablesToCalculate = [];
     out.textContent = '';
 }
@@ -27,10 +45,12 @@ document.querySelector('.buttons').onclick = (event) => {
 
     if (digit.includes(key)) {
         digitBuffer += key;
+        historytest += `${key} `;
     }
     if (action.includes(key)) {
         variablesToCalculate.push(digitBuffer);
         variablesToCalculate.push(key);
+        historytest += `${key} `;  
         digitBuffer = '';
     }
     if (key === '=') {
@@ -61,7 +81,8 @@ document.querySelector('.buttons').onclick = (event) => {
             console.log('Log after calculate: ', variablesToCalculate)
         }
         digitBuffer = calculation;
-        variablesToCalculate = [];
+        historytest += ` = ${digitBuffer}`;
+        variablesToCalculate = [];      // чтобы обнулять массив
         out.textContent = digitBuffer;
     }
 }
