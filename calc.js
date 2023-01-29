@@ -12,16 +12,21 @@ const out = document.querySelector('.calc-screen span');
 screenHistory = document.createElement('div')
 
 function history () {
+    
     let test = historytest;
-    let test2 = ''
-    while (test2 === historytest.match(/=/g)  ) {
-
-     }
-
+    let i = 0;
+    let test2 = 0
+    while (test2 !== historytest.split("=").length - 1  ) {
+        i++;
+        test2++
+        screenHistory.className = "history-screen";
+        screenHistory.innerHTML += `${i}) <span> ${test} </span>\n`
+        console.log(screenHistory.innerHTML)
+    }
 
     
-    screenHistory.className = "history-screen";
-    screenHistory.innerHTML = `${i}) <span> ${test} </span>`
+
+
     document.querySelector('.calc-history').append(screenHistory)
 
 
