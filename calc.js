@@ -1,36 +1,28 @@
-
 const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '( )'];
 const action = ['-', '+', 'X', '/', '+/-'];
 
 let calculation = '';
 let variablesToCalculate = [];
 let digitBuffer = '';
-// экран
-let historytest = '';
-        // sdafasf
-const out = document.querySelector('.calc-screen span');
+
+/// История
 screenHistory = document.createElement('div')
+let historyBuffer = '';
+let historyOutputVariable = '';
+let historyList = '';
+
 
 function history () {
-    
-    let test = historytest;
-    let i = 0;
-    let test2 = 0
-    while (test2 !== historytest.split("=").length - 1  ) {
-        i++;
-        test2++
-        screenHistory.className = "history-screen";
-        screenHistory.innerHTML += `${i}) <span> ${test} </span>\n`
-        console.log(screenHistory.innerHTML)
-    }
-
-    
-
-
-    document.querySelector('.calc-history').append(screenHistory)
-
-
+    screenHistory.className = "history-screen";
+    screenHistory.innerHTML += `<span> ${historyOutputVariable} </span>`
+    document.querySelector('.calc-history').append(historyOutputVariable)
 }
+
+document.querySelector('.calc-history').onclick = history;
+
+
+/// основное тело js
+const out = document.querySelector('.calc-screen span');
 
 function clearAll() {
     digitBuffer = '';
@@ -38,8 +30,8 @@ function clearAll() {
     out.textContent = '';
 }
 
-document.querySelector('.calc-history').onclick = history;
 document.querySelector('.ac').onclick = clearAll;
+
 
 document.querySelector('.buttons').onclick = (event) => {
     if (!event.target.classList.contains('btn')) return; // contains невразумив
@@ -50,12 +42,12 @@ document.querySelector('.buttons').onclick = (event) => {
 
     if (digit.includes(key)) {
         digitBuffer += key;
-        historytest += `${key} `;
+        historyBuffer += `${key} `;
     }
     if (action.includes(key)) {
         variablesToCalculate.push(digitBuffer);
         variablesToCalculate.push(key);
-        historytest += `${key} `;  
+        historyBuffer += `${key} `;
         digitBuffer = '';
     }
     if (key === '=') {
@@ -86,8 +78,10 @@ document.querySelector('.buttons').onclick = (event) => {
             console.log('Log after calculate: ', variablesToCalculate)
         }
         digitBuffer = calculation;
-        historytest += ` = ${digitBuffer}`;
-        variablesToCalculate = [];      // чтобы обнулять массив
+        historyBuffer += ` = ${digitBuffer}`;
+        historyOutputVariable += `${++historyList}) ${historyBuffer} \n`;
+        historyBuffer = digitBuffer;
+        variablesToCalculate = [];      // чтобы обнулять массив после =
         out.textContent = digitBuffer;
     }
 }
