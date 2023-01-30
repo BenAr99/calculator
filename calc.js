@@ -1,35 +1,43 @@
 const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '( )'];
 const action = ['–', '+', '×', '÷', '+/-'];
 
+let out = document.querySelector('.calc-screen span');
 let calculation = '';
 let variablesToCalculate = [];
 let digitBuffer = '';
 
 /// История
-screenHistory = document.createElement('div')
+
 let historyBuffer = '';
 const historyOutput = [];
+let closeScreenHistory = document.querySelector('.btn-history');
+let historyOpen = false;
 
-function history () {
+function openHistory () {
+    const screenHistory = document.createElement('ul')
+    if (historyOpen === false) {
+        historyOpen = true;
+        closeScreenHistory.textContent = 'Закрыть'
+        document.querySelector('.calc-screen span').remove()
+        screenHistory.className = "history-screen";
+        for (let i = 0; i < historyOutput.length; i++) {
+            screenHistory.innerHTML += `<li> ${historyOutput[i]}</li>`
+        }
+        document.querySelector('.calc-screen').append(screenHistory);
 
-    screenHistory.className = "history-screen";
+        out.textContent = '';
+        digitBuffer = '';
+    } else {
+        historyOpen = false;
 
-    for (let i = 0; i < historyOutput.length; i++) {
-        screenHistory.innerHTML += `<span> ${historyOutput[i]}<br></span>`
-
+        closeScreenHistory.textContent = 'История'
+        document.querySelector('.calc-screen ul').remove()
+        const screenSpan = document.createElement('span');
+        document.querySelector('.calc-screen').append(screenSpan);
+        out = screenSpan;
+        console.log(out)
     }
-
-    document.querySelector('.calc-history').append(screenHistory)
-    out.textContent = ''
-    digitBuffer = '';
-
 }
-
-document.querySelector('.calc-history').onclick = history;
-
-
-/// основное тело js
-const out = document.querySelector('.calc-screen span');
 
 function clearAll() {
     digitBuffer = '';
@@ -37,8 +45,9 @@ function clearAll() {
     out.textContent = '';
 }
 
-document.querySelector('.ac').onclick = clearAll;
+document.querySelector('.btn-history').onclick = openHistory;
 
+document.querySelector('.ac').onclick = clearAll;
 
 document.querySelector('.buttons').onclick = (event) => {
     if (!event.target.classList.contains('btn')) return; // contains невразумив
@@ -60,9 +69,6 @@ document.querySelector('.buttons').onclick = (event) => {
     if (key === '=') {
         variablesToCalculate.push(digitBuffer)
         digitBuffer = '';
-        // ['1', '+', '2', '-', '1']
-        // ['3', '-', '1']
-        // ['2']
         while (variablesToCalculate.length > 1) {
             let value1 = Number(variablesToCalculate[0]);
             let value2 = Number(variablesToCalculate[2]);
@@ -86,7 +92,7 @@ document.querySelector('.buttons').onclick = (event) => {
             console.log('Log after calculate: ', variablesToCalculate)
         }
         digitBuffer = calculation;
-        variablesToCalculate = [];      // чтобы обнулять массив после =
+        variablesToCalculate = [];
         out.textContent = digitBuffer;
     }
 }

@@ -7,7 +7,7 @@
 .calc {
     margin: 50px auto;
     width: 325px;
-    height: 625px;
+    height: 650px;
     border: 1px solid#000;
     border-radius: 20px;
     background: black;
@@ -43,10 +43,30 @@
 
 .history-screen {
     display: flex;
+    padding-right: 20px;
+    max-height: 145px;
+    overflow: auto; /* прочитать */
     flex-direction: column;
-    color: orange;
-    min-width: 100px;
-    max-width: 150px;
+    list-style-type: none;
+    color: white;
+}
+
+.history-screen::-webkit-scrollbar {
+    width: 7px;
+    background-color: #a6a6a6;
+    border-radius: 10px;
+}
+
+.history-screen::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color:  #ff9501;
+    background-image: -webkit-linear-gradient(45deg,rgba(255, 255, 255, .25) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, .25) 50%,
+    rgba(255, 255, 255, .25) 75%,
+    transparent 75%,
+    transparent);
 }
 
 .calc-screen {
@@ -75,13 +95,12 @@
 
 .buttons {
     display: grid;
-    grid-template-areas: inherit;
     grid-template-areas:
             "ac plus-minus percent division"
             "seven eight nine myltiply"
             "four five six minus"
             "one two three plus"
-            "bracket bracket dot equal"
+            "bracket-open bracket-close dot equal"
             "zero zero zero zero";
     grid-gap: 7px;
     justify-items: center;
