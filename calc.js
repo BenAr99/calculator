@@ -7,7 +7,6 @@ let variablesToCalculate = [];
 let digitBuffer = '';
 
 /// История
-
 let historyBuffer = '';
 const historyOutput = [];
 let closeScreenHistory = document.querySelector('.btn-history');
@@ -16,8 +15,8 @@ let historyOpen = false;
 function openHistory () { // сделать Event
     const screenHistory = document.createElement('ul')
     if (historyOpen === false) {
-        historyOpen = true;
-        closeScreenHistory.textContent = 'Закрыть'
+        historyOpen = true; // Переместить в конец
+        closeScreenHistory.textContent = 'Закрыть' //Переместить в конец
         document.querySelector('.calc-screen span').remove()
         screenHistory.className = "history-screen";
         for (let i = 0; i < historyOutput.length; i++) {
@@ -30,8 +29,8 @@ function openHistory () { // сделать Event
         variablesToCalculate = []
         digitBuffer = '';
     } else {
-        historyOpen = false;
-        closeScreenHistory.textContent = 'История'
+        historyOpen = false; //Переместить в конец
+        closeScreenHistory.textContent = 'История'//Переместить в конец
         document.querySelector('.calc-screen ul').remove()
         const screenSpan = document.createElement('span');
         document.querySelector('.calc-screen').append(screenSpan);
@@ -39,30 +38,30 @@ function openHistory () { // сделать Event
     }
 }
 
-function OutputHistoryToTheCalcScreen (e) {
+//Я эту хуйню сам не пойм
+function OutputHistoryToTheCalcScreen (e) { //имя функций с маленькой и вообще наименование говно а если класс calc screen поменяется, я вообще нихуя не пойму
     if (!(e.target.tagName === 'LI')) return;
     openHistory();
     let historyCalculation = e.target;
-    let test2 = '=';
+    let test2 = '='; //че такое тест2?
     // historyCalculation.textContent.split(test2).splice(0, 1);
-    historyCalculation.textContent = [historyCalculation.textContent.split(test2).splice(0, 1)]; // смотреть на 46
-    console.log(historyCalculation.textContent)
+    historyCalculation.textContent = [historyCalculation.textContent.split(test2).splice(0, 1)]; // смотреть на 46 | заебал начни смотреть на варнинги и вообще нахуй эта строчка?????? И вообще почему ты всегда на taxt content опираешься?
     variablesToCalculate = historyCalculation.textContent.split(' ');
     variablesToCalculate.pop()
-    console.log(`fff${variablesToCalculate}`)
     out.textContent = historyCalculation.textContent.split('=')[0];
-    console.log(out.textContent);
 }
 
+//Ты даун? Какая ириска? нельзя написать deleteChar? или хотя быпросто delete
 function erase () {
     console.log(digitBuffer);
     if (action.includes(variablesToCalculate[variablesToCalculate.length-1]) && digitBuffer === '') {
         variablesToCalculate.pop()
         out.textContent  = variablesToCalculate
-    } else if (digitBuffer.length === 1) {
+    } else if (digitBuffer.length === 1) { // можно просто return без else if
+        console.log(digitBuffer, 'yaya')
         out.textContent = variablesToCalculate.join(' ')
         digitBuffer = ''
-    } else if (digitBuffer.length >= 2 ) {
+    } else if (digitBuffer.length >= 2 ) { // можно просто return без else if
         digitBuffer = digitBuffer.slice(0, -1);
         out.textContent = variablesToCalculate.join(' ') + digitBuffer
         console.log(variablesToCalculate)
