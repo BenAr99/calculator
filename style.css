@@ -76,6 +76,7 @@
     justify-items: end;
     align-items: end;
     margin-bottom: 25px;
+    user-select: none;
 }
 
 .calc-screen span {
@@ -86,6 +87,7 @@
 .delete-button-container {
     display: flex;
     justify-content: end;
+    margin: 0 0 15px 0;
 }
 
 .delete-button-container img {
