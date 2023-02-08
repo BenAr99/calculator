@@ -8,64 +8,61 @@ let digitBuffer = '';
 
 /// История
 let historyBuffer = '';
-const historyOutput = [];
+const historyOutput = localStorage.getItem('historyOutput')?.split(',') ?? []
 let closeScreenHistory = document.querySelector('.btn-history');
 let historyOpen = false;
 
 function openHistory () { // сделать Event
     const screenHistory = document.createElement('ul')
     if (historyOpen === false) {
-        historyOpen = true; // Переместить в конец
-        closeScreenHistory.textContent = 'Закрыть' //Переместить в конец
         document.querySelector('.calc-screen span').remove()
         screenHistory.className = "history-screen";
+        historyOpen = true;
+        closeScreenHistory.textContent = 'Закрыть';
         for (let i = 0; i < historyOutput.length; i++) {
             screenHistory.innerHTML += `<li>${historyOutput[i]} </li>`
         }
         document.querySelector('.calc-screen').append(screenHistory);
 
-        document.querySelector('.calc-screen ul').onclick = OutputHistoryToTheCalcScreen;
+        document.querySelector('.calc-screen ul').onclick = outputHistoryToScreen;
         out.textContent = '';
         variablesToCalculate = []
         digitBuffer = '';
     } else {
-        historyOpen = false; //Переместить в конец
-        closeScreenHistory.textContent = 'История'//Переместить в конец
         document.querySelector('.calc-screen ul').remove()
         const screenSpan = document.createElement('span');
         document.querySelector('.calc-screen').append(screenSpan);
         out = screenSpan;
+        historyOpen = false;
+        closeScreenHistory.textContent = 'История'
     }
 }
 
-//Я эту хуйню сам не пойм
-function OutputHistoryToTheCalcScreen (e) { //имя функций с маленькой и вообще наименование говно а если класс calc screen поменяется, я вообще нихуя не пойму
-    if (!(e.target.tagName === 'LI')) return;
+function outputHistoryToScreen (e) {
+    if (e.target.tagName !== 'LI') return;
     openHistory();
     let historyCalculation = e.target;
-    let test2 = '='; //че такое тест2?
-    // historyCalculation.textContent.split(test2).splice(0, 1);
-    historyCalculation.textContent = [historyCalculation.textContent.split(test2).splice(0, 1)]; // смотреть на 46 | заебал начни смотреть на варнинги и вообще нахуй эта строчка?????? И вообще почему ты всегда на taxt content опираешься?
-    variablesToCalculate = historyCalculation.textContent.split(' ');
-    variablesToCalculate.pop()
+    (historyCalculation.textContent)
+    historyCalculation.textContent = historyCalculation.textContent.split('=').splice(0, 1).join(' ');
+    variablesToCalculate = historyCalculation.textContent.trim().split(' ');
     out.textContent = historyCalculation.textContent.split('=')[0];
 }
 
-//Ты даун? Какая ириска? нельзя написать deleteChar? или хотя быпросто delete
-function erase () {
-    console.log(digitBuffer);
+
+function deleteChar () {
     if (action.includes(variablesToCalculate[variablesToCalculate.length-1]) && digitBuffer === '') {
         variablesToCalculate.pop()
         out.textContent  = variablesToCalculate
-    } else if (digitBuffer.length === 1) { // можно просто return без else if
-        console.log(digitBuffer, 'yaya')
+        return;
+    }
+    if (digitBuffer.length === 1) {
         out.textContent = variablesToCalculate.join(' ')
         digitBuffer = ''
-    } else if (digitBuffer.length >= 2 ) { // можно просто return без else if
+        return
+    }
+    if (digitBuffer.length >= 2 ) {
         digitBuffer = digitBuffer.slice(0, -1);
         out.textContent = variablesToCalculate.join(' ') + digitBuffer
-        console.log(variablesToCalculate)
-        console.log(digitBuffer)
     }
 }
 
@@ -75,17 +72,30 @@ function clearAll() {
     out.textContent = '';
 }
 
+document.onkeyup = handleEnterKeyboard;
+
 document.querySelector('.btn-history').onclick = openHistory;
 
-document.querySelector('.delete-button-container img').onclick = erase;
+document.querySelector('.delete-button-container img').onclick = deleteChar;
 
 document.querySelector('.ac').onclick = clearAll;
 
-document.querySelector('.buttons').onclick = (event) => {
-    if (!event.target.classList.contains('btn')) return;
-    if (event.target.classList.contains('ac')) return;
+document.querySelector('.buttons').onclick = handleEnterClick;
 
-    const key = event.target.textContent;
+function handleEnterClick (event) {
+        if (!event.target.classList.contains('btn')) return;
+        if (event.target.classList.contains('ac')) return;
+
+        addKey(event.target.textContent)
+}
+
+function handleEnterKeyboard (event) {
+        if (!(action.includes(event.key) || digit.includes(event.key))) return;
+
+        addKey(event.key)
+}
+
+function addKey(key){
     out.textContent += key;
 
     if (digit.includes(key)) { // другой способ через split
@@ -99,7 +109,6 @@ document.querySelector('.buttons').onclick = (event) => {
         digitBuffer = '';
     } else if (action.includes(key)) { //
         variablesToCalculate.push(key);
-        console.log("После знака", variablesToCalculate)
         historyBuffer += `${key} `;
         digitBuffer = '';
     }
@@ -124,13 +133,12 @@ document.querySelector('.buttons').onclick = (event) => {
                     break
             }
             historyOutput.push(`${value1} ${variablesToCalculate[1]} ${value2} = ${calculation}`);
+            localStorage.setItem('historyOutput', historyOutput.toString())
             variablesToCalculate.splice(0, 3);
             variablesToCalculate.unshift(calculation.toString());
-            console.log('Log after calculate: ', variablesToCalculate)
         }
         digitBuffer = calculation;
         variablesToCalculate = [];
         out.textContent = digitBuffer;
     }
 }
-// криво смотрится после вывода решение
